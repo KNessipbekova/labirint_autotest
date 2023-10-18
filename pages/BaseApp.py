@@ -1,3 +1,4 @@
+from selenium.common import TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -88,3 +89,14 @@ class BasePage:
     def hover_over(self, browser, locator):
         action = ActionChains(browser)
         action.move_to_element(locator).perform()
+
+    def switch_to_next_tab(self, browser):
+        current_tab_index = browser.window_handles.index(browser.current_window_handle)
+        next_tab_index = (current_tab_index + 1) % len(browser.window_handles)
+        browser.switch_to.window(browser.window_handles[next_tab_index])
+
+    def switch_to_previous_tab(self, browser):
+        current_tab_index = browser.window_handles.index(browser.current_window_handle)
+        previous_tab_index = (current_tab_index - 1) % len(browser.window_handles)
+        print(previous_tab_index, current_tab_index)
+        browser.switch_to.window(browser.window_handles[previous_tab_index])
